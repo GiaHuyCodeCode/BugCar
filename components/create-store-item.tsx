@@ -9,6 +9,8 @@ interface CreareNewStoreItemProps{
 
 const CreareNewStoreItem = ({onClick}:CreareNewStoreItemProps) => {
   return (
+
+    
     <div onClick={onClick}
         className="flex items-center bg-gray-50 px-2 py-1 cursor-pointer text-muted-foreground hover:text-primary "
     >
