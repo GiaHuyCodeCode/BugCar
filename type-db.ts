@@ -8,3 +8,11 @@ export interface Store{
     updateAt: Timestamp;
 
 }
+
+export interface Billboards{
+    id: string,
+    label: string,
+    imageUrl: string,
+    createAt: Timestamp;
+    updateAt: Timestamp;
+}

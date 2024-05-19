@@ -4,7 +4,7 @@ import { Heading } from "@/components/Heading"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Store } from "@/type-db"
+import { Billboards, Store } from "@/type-db"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Separator } from "@/components/ui/separator"
 import { Trash } from "lucide-react"
@@ -18,16 +18,18 @@ import { AlertModal } from "@/components/modal/alert-modal";
 import { Alert } from "@/components/ui/alert";
 import { ApiAlert } from "@/components/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
+import ImageUpload from "@/components/image-update";
 
-interface SettingFormProps{
-    initialData : Store
+interface BillboardFormProps{
+    initialData : Billboards
 }
 
 const formSchema= z.object({
-  name: z.string().min(3,{message : "Store name should be minimum 3 characters"})
+  label: z.string().min(1),
+  imageUrl: z.string().min(1),
 });
 
-export const SettingsForm = ({initialData} : SettingFormProps)=>  {
+export const BillboardForm = ({initialData} : BillboardFormProps)=>  {
   
   const form= useForm<z.infer<typeof formSchema>>({
     resolver :zodResolver(formSchema),
@@ -37,7 +39,12 @@ export const SettingsForm = ({initialData} : SettingFormProps)=>  {
     const [open,setOpen]= useState(false);
     const params = useParams();
     const router= useRouter();
-    const origin=useOrigin();
+
+    const title = initialData ? "Edit Billboard" : "Create Billboard"; 
+    const description= initialData ? "Edit a billboard" : "Add a new billboard";
+    const toastMessage = initialData ? "Billboard Updated" : "Billboard Created"; 
+    const action = initialData ? "Save Changes" : "Create Billboard"; 
+
 
     const onSubmit= async (data : z.infer<typeof formSchema>)=> {
       try {
@@ -81,10 +88,16 @@ export const SettingsForm = ({initialData} : SettingFormProps)=>  {
       loading= {isLoading}
     />
     <div className="flex items-center justify-center">
-      <Heading title="Settings" description="Manage Store Preferences"/>
-      <Button variant={"destructive"} size={"icon"} onClick={()=> setOpen(true)}>
+      <Heading title={title} description={description}/>
+      {initialData && (
+      <Button
+      disabled={isLoading} 
+      variant={"destructive"} 
+      size={"icon"} 
+      onClick={()=> setOpen(true)}>
         <Trash className="h-4 w-4"/>
       </Button>
+      )}
     </div>
     
 
@@ -94,7 +107,27 @@ export const SettingsForm = ({initialData} : SettingFormProps)=>  {
                   <form onSubmit={form.handleSubmit(onSubmit)} 
                   className="w-full space-y-8">
                    <div className=" grid grid-cols-3 gap-8">
-                   <FormField control={form.control} name="name" render={({field}) => (
+
+                    <FormField 
+                        control={form.control}
+                        name="imageUrl"
+                        render={({field})=> (
+                            <FormItem>
+                                <FormLabel>Billboard Image</FormLabel>
+                                <FormControl>
+                                    <ImageUpload 
+                                    value={field.value ? [field.value] : []} 
+                                    disable= {isLoading}
+                                    onChange={(url)=> field.onChange(url)}
+                                    onRemove={()=> field.onChange("")}
+                                    
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />  
+                
+                   <FormField control={form.control} name="label" render={({field}) => (
                       <FormItem>
                         <FormLabel>
                           Name
@@ -102,7 +135,7 @@ export const SettingsForm = ({initialData} : SettingFormProps)=>  {
                         <FormControl>
                           <Input
                             disabled={isLoading}
-                            placeholder="Your store name..."
+                            placeholder="Your Billboard name..."
                             {... field}
                           />
 
@@ -117,12 +150,7 @@ export const SettingsForm = ({initialData} : SettingFormProps)=>  {
               </Form>
               
 
-              <Separator/>
-              <ApiAlert
-                title="testing"
-                description={`${origin}/api/${params.storeId}`}
-                variant= "public"
-              />
+            
 
 
     </>
