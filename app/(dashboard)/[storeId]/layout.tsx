@@ -15,7 +15,6 @@ const DashboardLayout = async ({children, params} : DashboardLayoutProps) => {
     const {userId}= auth()
     if(!userId){
         redirect("/sign-in")
-
     }
 
     const storeSnap= await getDocs(

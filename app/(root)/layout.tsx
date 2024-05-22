@@ -13,27 +13,26 @@ const SetupLayout = async ({ children }: SetupLayoutProps) => {
 
   if (!userId) {
     redirect(`/sign-in`);
-  
   }
-    const storeSnap = await getDocs(
-      query(collection(db, "stores"), where("userId", "==", userId))
-    );
 
-    let store =null as any
-    
-    storeSnap.forEach(doc=>{
-      store=doc.data() as Store
-      
-      return;
-    });
-    console.log(store);
+  const storeSnap = await getDocs(
+    query(collection(db, "stores"), where("userId", "==", userId))
+  );
 
-    if (store) {
-      redirect(`/${store?.id}`);
-      
-    }
+  let store =null as any
   
+  storeSnap.forEach(doc=>{
+    store=doc.data() as Store
+    
+    return;
+  });
+  console.log(store);
 
+  if (store) {
+    redirect(`/${store?.id}`);
+    
+  }
+  
   return (<div>{children}</div>);
 };
 

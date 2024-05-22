@@ -1,13 +1,14 @@
 "use client"
 
 import { storage } from "@/lib/firebase";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { url } from "inspector";
-import {  ImagePlus } from "lucide-react";
+import {  ImagePlus, Trash } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {PuffLoader} from "react-spinners"
+import { Button } from '@/components/ui/button'
 
 interface ImageUploadProps{
     disable? : boolean;
@@ -35,25 +36,29 @@ const ImageUpload = ({disable, onChange,onRemove,value} : ImageUploadProps ) => 
         const file =e.target.files[0];
         setIsLoading(true);
 
-        const uploadTask = uploadBytesResumable(ref(storage, `Images/${Date.now()}-${file.name}`),
-    file,   
-    { contentType: file.type }
-     );
+        const uploadTask = uploadBytesResumable(ref(storage, `Images/${Date.now()}-${file.name}`), file, { contentType: file.type });
 
-     uploadTask.on("state_changed",
-        (snapshot) => {
-            setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
-        },
-        (error) => {toast.error(error.message)},
-        () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=> {
-                
-                onChange(downloadURL)
-                setIsLoading(false);
-            });
-        }
-      );
+        uploadTask.on("state_changed",
+            (snapshot) => {
+                setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+            },
+            (error) => {toast.error(error.message)},
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL)=> {
+                    
+                    onChange(downloadURL)
+                    setIsLoading(false);
+                });
+            }
+        );
     };
+    
+    const onDelete = (url: string) => {
+        onRemove(url)
+        deleteObject(ref(storage, url)).then(() => {
+            toast.success('Image removed')
+        })
+    }
 
     return (
         <div> 
@@ -63,18 +68,18 @@ const ImageUpload = ({disable, onChange,onRemove,value} : ImageUploadProps ) => 
                 {value.map(url => (
                      <div className="relative w-52 h-52 rounded-md overflow-hidden" key={url}>
                         <Image
-                        fill 
-                        className="object-cover"
-                        alt="Billboard Image"
-                        src= {url}
+                            fill 
+                            className="object-cover"
+                            alt="Billboard Image"
+                            src= {url}
                         />
-
+                        <div className="absolute z10 top-2 right-2">
+                            <Button type="button" onClick={() => onDelete(url)} variant='destructive' size='icon'>
+                                <Trash className="h-4 w-4"/>
+                            </Button>
+                        </div>
                      </div>
-
-                    ))
-
-                }
-
+                ))}
                </div>
             </>
             ):(
