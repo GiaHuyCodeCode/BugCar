@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { Separator } from "@/components/ui/separator";
 import { BillboardColumns, columns } from "./columns";
+import ApiList from "@/components/api-list";
 
 interface BillboardClientProps {
   data: BillboardColumns[]
@@ -21,7 +22,7 @@ const BillboardClient = ({data}: BillboardClientProps) => {
     <>
       <div className="flex items-center justify-between">
         <Heading 
-          title={`Billboards (0)`}
+          title={`Billboards (${data.length})`}
           description="Manage billboards for your store"
         />
         <Button onClick={()=> router.push(`/${params.storeId}/billboards/create`)}>
@@ -32,6 +33,10 @@ const BillboardClient = ({data}: BillboardClientProps) => {
 
       <Separator/>
       <DataTable searchKey="label" columns={columns} data={data}/>
+
+      <Heading title="API" description="API calls for billboards"/>
+      <Separator/>
+      <ApiList entityName="billboards" entityNameId="billboardId"/>
     </>
   )
 }

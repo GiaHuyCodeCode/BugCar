@@ -8,7 +8,7 @@ import { deleteObject, ref } from "firebase/storage"
 import { storage } from "@/lib/firebase"
 import axios from "axios"
 
-import { BillboardColumns } from "./columns"
+import { CategoryColumns } from "./columns"
 import { 
     DropdownMenu, 
     DropdownMenuContent, 
@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button"
 import { AlertModal } from "@/components/modal/alert-modal"
 
 interface CellActionProps {
-    data: BillboardColumns
+    data: CategoryColumns
 }
 
 export const CellAction = ({data}: CellActionProps) => {
@@ -32,19 +32,17 @@ export const CellAction = ({data}: CellActionProps) => {
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id)
-        toast.success('Billboard id is copied')
+        toast.success('Category id is copied')
     }
 
     const onDelete = async () => {
         try {
             setIsLoading(true);
     
-            await deleteObject(ref(storage, data.imageUrl)).then(async ()=> {
-                await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
-            })
+            await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
         
-            toast.success("Billboard Removed"); 
-            router.push(`/${params.storeId}/billboards`)
+            toast.success("Category Removed"); 
+            router.push(`/${params.storeId}/categories`)
             location.reload()
             
         } catch (error) {
@@ -84,7 +82,7 @@ export const CellAction = ({data}: CellActionProps) => {
                         Copy Id
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/billboards/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/categories/${data.id}`)}>
                         <Edit className="h-4 w-4 mr-2"/>
                         Update
                     </DropdownMenuItem>

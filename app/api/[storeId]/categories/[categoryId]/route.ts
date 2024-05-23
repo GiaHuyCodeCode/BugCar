@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebase"
-import { Billboards } from "@/type-db"
+import { Billboards, Category } from "@/type-db"
 import { auth } from "@clerk/nextjs/server"
 import { 
     deleteDoc, 
@@ -11,7 +11,7 @@ import {
 import { NextResponse } from "next/server"
 
 export const PATCH = async (req: Request, 
-    {params} : {params : {storeId: string, billboardId: string}}) => {
+    {params} : {params : {storeId: string, categoryId: string}}) => {
         try {
             const { userId } = auth()
             const body = await req.json()
@@ -20,22 +20,18 @@ export const PATCH = async (req: Request,
                 return new NextResponse('Unauthorized', { status: 400 })
             }
 
-            const { label, imageUrl } = body
+            const { name, billboardLabel, billboardId } = body
 
-            if(!label) {
-                return new NextResponse('Billboard name is missing!', { status: 400 })
+            if(!name) {
+                return new NextResponse('Category name is missing!', { status: 400 })
             }
 
-            if(!imageUrl) {
-                return new NextResponse('Billboard image is missing!', { status: 400 })
+            if(!billboardId) {
+                return new NextResponse('Billboard id is missing!', { status: 400 })
             }
 
             if(!params.storeId) {
                 return new NextResponse('Store id is missing!', { status: 400 })
-            }
-
-            if(!params.billboardId) {
-                return new NextResponse('Billboard id is missing!', { status: 400 })
             }
 
             const store = await getDoc(doc(db, 'stores', params.storeId))
@@ -48,40 +44,41 @@ export const PATCH = async (req: Request,
                 } 
             }
 
-            const billboardRef = await getDoc(
-                doc(db, 'stores', params.storeId, 'billboards', params.billboardId)
+            const categoryRef = await getDoc(
+                doc(db, 'stores', params.storeId, 'categories', params.categoryId)
             )
 
-            if(billboardRef.exists()) {
+            if(categoryRef.exists()) {
                 await updateDoc(
-                    doc(db, 'stores', params.storeId, 'billboards', params.billboardId),
+                    doc(db, 'stores', params.storeId, 'categories', params.categoryId),
                     {
-                        ...billboardRef.data,
-                        label,
-                        imageUrl,
+                        ...categoryRef.data,
+                        name,
+                        billboardId,
+                        billboardLabel,
                         updateAt: serverTimestamp(),
                     }
                 )
             } else {
-                return new NextResponse('Billboard not found', {status: 404})
+                return new NextResponse('Category not found', {status: 404})
             }
 
-            const billboard = (
+            const category = (
                 await getDoc(
-                    doc(db, 'stores', params.storeId, 'billboards', params.billboardId)
+                    doc(db, 'stores', params.storeId, 'categories', params.categoryId)
                 )
-            ).data() as Billboards
+            ).data() as Category
 
-            return NextResponse.json(billboard)
+            return NextResponse.json(category)
 
         } catch (err) {
-            console.log(`BILLBOARD_PATCH: ${err}`)
+            console.log(`CATEGORY_PATCH: ${err}`)
             return new NextResponse("Internal Server Error", {status : 500})
         }
     }
 
 export const DELETE = async (req: Request, 
-    {params} : {params : {storeId: string, billboardId: string}}) => {
+    {params} : {params : {storeId: string, categoryId: string}}) => {
         try {
             const { userId } = auth()
 
@@ -93,8 +90,8 @@ export const DELETE = async (req: Request,
                 return new NextResponse('Store id is missing!', { status: 400 })
             }
 
-            if(!params.billboardId) {
-                return new NextResponse('Store id is missing!', { status: 400 })
+            if(!params.categoryId) {
+                return new NextResponse('Category id is missing!', { status: 400 })
             }
 
             const store = await getDoc(doc(db, 'stores', params.storeId))
@@ -107,14 +104,14 @@ export const DELETE = async (req: Request,
                 } 
             }
 
-            const billboardRef = doc(db, 'stores', params.storeId, 'billboards', params.billboardId)
+            const categoryRef = doc(db, 'stores', params.storeId, 'categories', params.categoryId)
 
-            await deleteDoc(billboardRef)
+            await deleteDoc(categoryRef)
 
-            return NextResponse.json({msg: 'Billboard deleted successfully'})
+            return NextResponse.json({msg: 'Category deleted successfully'})
 
         } catch (err) {
-            console.log(`BILLBOARD_DELETE: ${err}`)
+            console.log(`CATEGORY_DELETE: ${err}`)
             return new NextResponse("Internal Server Error", {status : 500})
         }
     }
