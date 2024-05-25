@@ -41,3 +41,27 @@ export interface Kitchen {
     createAt?: Timestamp;
     updateAt?: Timestamp;
 }
+
+export interface Brand {
+    id: string,
+    name: string,
+    value: string,
+    createAt?: Timestamp;
+    updateAt?: Timestamp;
+}
+
+export interface Product {
+    id: string,
+    name: string,
+    price: number,
+    quantity?: number,
+    images: { url: string[] },
+    isFeatured: boolean,
+    isArchived: boolean,
+    category: string,
+    size: string,
+    kitchen: string,
+    brand: string,
+    createAt?: Timestamp;
+    updateAt?: Timestamp;
+}

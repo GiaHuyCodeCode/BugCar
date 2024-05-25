@@ -4,7 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { Size } from "@/type-db";
 import { SizeForm } from "./_components/size-form";
 
-const CategoryPage = async ({params}: {params : {sizeId : string, storeId : string}}) => {
+const SizePage = async ({params}: {params : {sizeId : string, storeId : string}}) => {
     
     const size = (
         await getDoc(doc(db, "stores", params.storeId, "sizes", params.sizeId))
@@ -16,4 +16,4 @@ const CategoryPage = async ({params}: {params : {sizeId : string, storeId : stri
         </div>
     );
 };
-export default CategoryPage;
+export default SizePage;

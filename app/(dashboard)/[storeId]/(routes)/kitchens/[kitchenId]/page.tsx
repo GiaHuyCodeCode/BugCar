@@ -4,7 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { Kitchen } from "@/type-db";
 import { KitchenForm } from "./_components/kitchen-form";
 
-const CategoryPage = async ({params}: {params : {kitchenId : string, storeId : string}}) => {
+const KitchenPage = async ({params}: {params : {kitchenId : string, storeId : string}}) => {
     
     const kitchen = (
         await getDoc(doc(db, "stores", params.storeId, "kitchens", params.kitchenId))
@@ -16,4 +16,4 @@ const CategoryPage = async ({params}: {params : {kitchenId : string, storeId : s
         </div>
     );
 };
-export default CategoryPage;
+export default KitchenPage;
