@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation"
 import { Copy, Edit, MoreVertical, Trash } from "lucide-react"
 import axios from "axios"
 
-import { ProductColumns } from "./columns"
+import { OrderColumns } from "./columns"
 import { 
     DropdownMenu, 
     DropdownMenuContent, 
@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button"
 import { AlertModal } from "@/components/modal/alert-modal"
 
 interface CellActionProps {
-    data: ProductColumns
+    data: OrderColumns
 }
 
 export const CellAction = ({data}: CellActionProps) => {
@@ -30,27 +30,28 @@ export const CellAction = ({data}: CellActionProps) => {
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id)
-        toast.success('Product id is copied')
+        toast.success('Size id is copied')
     }
 
     const onDelete = async () => {
         try {
             setIsLoading(true);
-      
-            await axios.delete(`/api/${params.storeId}/products/${data.id}`);
-      
-            toast.success("Product Removed");
-            router.push(`/${params.storeId}/products`)
+    
+            await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
+        
+            toast.success("Size Removed"); 
+            router.push(`/${params.storeId}/sizes`)
             location.reload()
-
+            
         } catch (error) {
             toast.error("Something were wrong");
-      
+            
         } finally {
             setIsLoading(false);
             setOpen(false);
+            // router.refresh();
         }
-    }
+      }
 
     return (
         <>
@@ -79,7 +80,7 @@ export const CellAction = ({data}: CellActionProps) => {
                         Copy Id
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/products/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/sizes/${data.id}`)}>
                         <Edit className="h-4 w-4 mr-2"/>
                         Update
                     </DropdownMenuItem>

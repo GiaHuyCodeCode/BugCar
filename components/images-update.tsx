@@ -5,7 +5,7 @@ import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebas
 import { url } from "inspector";
 import {  ImagePlus, Trash } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {PuffLoader} from "react-spinners"
 import { Button } from '@/components/ui/button'
@@ -17,7 +17,7 @@ interface ImagesUploadProps{
     value: string[];
 }
 
-const ImagesUpload = ({disable, onChange,onRemove,value} : ImagesUploadProps ) => {
+const ImagesUpload = ({disable, onChange, onRemove, value} : ImagesUploadProps ) => {
     
     const [isMounted, setIsMounted]= useState (false)
     const [isLoading, setIsLoading]= useState (false)
@@ -27,17 +27,55 @@ const ImagesUpload = ({disable, onChange,onRemove,value} : ImagesUploadProps ) =
         setIsMounted(true)
     }, []);
 
-    if (!isMounted)
-        {
-            return null;
-        }
+    if (!isMounted){
+        return null;
+    }
 
-    const onUpload= async (e: any) => {
+    const onUpload= async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files: File[] = Array.from(e.target.files || [])
+        const newUrls: string[] = []
+        let completedUploads = 0
+
+        setIsLoading(true)
         
+        files.forEach((file: File) => {
+            const uploadTask = uploadBytesResumable(
+                ref(storage, `Images/Products/${Date.now()}-${file.name}`),
+                file,
+                { contentType: file.type }
+            )
+
+            uploadTask.on(
+                'state_changed', 
+                (snapshot) => {
+                    setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+                }, 
+                (error) => {
+                    toast.error(error.message)
+                }, 
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+                        newUrls.push(downloadUrl)
+                        
+                        completedUploads++
+
+                        if(completedUploads === files.length) {
+                            setIsLoading(false)
+                            onChange([...value, ...newUrls])
+                        }
+                    })
+                }
+            )
+        })
     };
     
     const onDelete = (url: string) => {
-        
+        const newValue = value.filter(imageUrl => imageUrl !== url)
+        onRemove(url)
+        onChange(newValue)
+        deleteObject(ref(storage, url)).then(() => {
+            toast.success('Image Removed')
+        })
     }
 
     return (
@@ -50,7 +88,7 @@ const ImagesUpload = ({disable, onChange,onRemove,value} : ImagesUploadProps ) =
                                 <Image
                                     fill 
                                     className="object-cover"
-                                    alt="Billboard Image"
+                                    alt="Product Images"
                                     src= {url}
                                 />
                                 <div className="absolute z10 top-2 right-2">
@@ -70,10 +108,10 @@ const ImagesUpload = ({disable, onChange,onRemove,value} : ImagesUploadProps ) =
                             <p>{`${progress.toFixed(2)}%`}</p>
                         </>:
                         <>
-                            <label>
+                            <label className="h-full">
                                 <div className="w-full h-full flex flex-col gap-2 items-center justify-center cursor-pointer">
                                     <ImagePlus className="h-4 w-4" />
-                                    <p>Upload an image</p>
+                                    <p>Upload images</p>
                                 </div>
                                 <input 
                                     type="file" 

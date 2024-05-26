@@ -2,15 +2,18 @@ import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/firebase"
 import { 
     addDoc,
+    and,
     collection,
     doc,
     getDoc,
     getDocs,
+    query,
     serverTimestamp,
-    updateDoc
+    updateDoc,
+    where
 } from "firebase/firestore"
 import { NextResponse } from "next/server"
-import { Size } from "@/type-db"
+import { Product } from "@/type-db"
 
 
 export const POST = async (req: Request, 
@@ -23,14 +26,32 @@ export const POST = async (req: Request,
                 return new NextResponse('Unauthorized', { status: 400 })
             }
 
-            const { name, value } = body
+            const { 
+                name, 
+                price,
+                images,
+                isFeatured,
+                isArchived,
+                category,
+                size,
+                kitchen,
+                brand,
+             } = body
 
             if(!name) {
-                return new NextResponse('Size name is missing!', { status: 400 })
+                return new NextResponse('Product name is missing!', { status: 400 })
             }
 
-            if(!value) {
-                return new NextResponse('Size value is missing!', { status: 400 })
+            if(!images || !images.length) {
+                return new NextResponse('Images are required!', { status: 400 })
+            }
+
+            if(!price) {
+                return new NextResponse('Price is missing!', { status: 400 })
+            }
+
+            if(!category) {
+                return new NextResponse('Category is missing!', { status: 400 })
             }
 
             if(!params.storeId) {
@@ -47,29 +68,36 @@ export const POST = async (req: Request,
                 } 
             }
 
-            const sizeData = {
+            const productData = {
                 name,
-                value,
+                price,
+                images,
+                isFeatured,
+                isArchived,
+                category,
+                size,
+                kitchen,
+                brand,
                 createAt: serverTimestamp()
             }
 
-            const sizeRef = await addDoc(
-                collection(db, 'stores', params.storeId, 'sizes'), 
-                sizeData
+            const productRef = await addDoc(
+                collection(db, 'stores', params.storeId, 'products'), 
+                productData
             )
 
-            const id = sizeRef.id
+            const id = productRef.id
 
-            await updateDoc(doc(db, 'stores', params.storeId, 'sizes', id), {
-                ...sizeData,
+            await updateDoc(doc(db, 'stores', params.storeId, 'products', id), {
+                ...productData,
                 id,
                 updateAt: serverTimestamp()
             })
 
-            return NextResponse.json({id, ...sizeData})
+            return NextResponse.json({id, ...productData})
 
         } catch (err) {
-            console.log(`SIZES_POST: ${err}`)
+            console.log(`PRODUCTS_POST: ${err}`)
             return new NextResponse("Internal Server Error", {status : 500})
         }
     }
@@ -81,16 +109,57 @@ export const GET = async (req: Request,
                 return new NextResponse('Store id is missing!', { status: 400 })
             }
 
-            const sizesData = (
-                await getDocs(
-                    collection(doc(db, 'stores', params.storeId), 'sizes')
+            // get searchParams
+            const {searchParams} = new URL(req.url)
+            const productRef = collection(doc(db, 'stores', params.storeId), 'products')
+            let productQuery
+            let queryContraints = []
+
+            if(searchParams.has('size')) {
+                queryContraints.push(where('size', '==', searchParams.get('size')))
+            }
+            if(searchParams.has('category')) {
+                queryContraints.push(where('category', '==', searchParams.get('category')))
+            }
+            if(searchParams.has('kitchen')) {
+                queryContraints.push(where('kitchen', '==', searchParams.get('kitchen')))
+            }
+            if(searchParams.has('brand')) {
+                queryContraints.push(where('brand', '==', searchParams.get('brand')))
+            }
+            if(searchParams.has('isFeatured')) {
+                queryContraints.push(
+                    where(
+                        'isFeatured', 
+                        '==', 
+                        searchParams.get('isFeatured') === 'true' ? true : false
+                    )
                 )
-            ).docs.map(doc => doc.data()) as Size[]
+            }
+            if(searchParams.has('isArchived')) {
+                queryContraints.push(
+                    where(
+                        'isArchived', 
+                        '==', 
+                        searchParams.get('isArchived') === 'true' ? true : false
+                    )
+                )
+            }
 
-            return NextResponse.json(sizesData)
+            if(queryContraints.length > 0) {
+                productQuery = query(productRef, and(...queryContraints))
+            }else {
+                productQuery = query(productRef)
+            }
 
+            // execute the query
+            const querySnapshot = await getDocs(productQuery)
+            const productData: Product[] = querySnapshot.docs.map(doc => doc.data() as Product)
+
+            return NextResponse.json(productData)
+            
         } catch (err) {
-            console.log(`SIZES_GET: ${err}`)
+            console.log(`PRODUCTS_GET: ${err}`)
             return new NextResponse("Internal Server Error", {status : 500})
         }
     }

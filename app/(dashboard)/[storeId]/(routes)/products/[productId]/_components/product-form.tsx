@@ -35,15 +35,15 @@ const formSchema= z.object({
   isFeatured: z.boolean().default(false).optional(),
   isArchived: z.boolean().default(false).optional(),
   category: z.string().min(1),
-  size: z.string().min(1),
-  kitchen: z.string().min(1),
-  brand: z.string().min(1),
+  size: z.string().optional(),
+  kitchen: z.string().optional(),
+  brand: z.string().optional(),
 });
 
 export const ProductForm = ({ initialData, categories, sizes, kitchens, brands }: ProductFormProps) => {
   const form= useForm<z.infer<typeof formSchema>>({
     resolver :zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       name: '',
       price: 0,
       images: [],
@@ -72,7 +72,8 @@ export const ProductForm = ({ initialData, categories, sizes, kitchens, brands }
 
       if(initialData) {
         await axios.patch(
-          `/api/${params.storeId}/products/${params.productId}`, data
+          `/api/${params.storeId}/products/${params.productId}`, 
+          data
         )
       } else {
         await axios.post(`/api/${params.storeId}/products`, data);
@@ -135,30 +136,30 @@ export const ProductForm = ({ initialData, categories, sizes, kitchens, brands }
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
+          <FormField 
+            control={form.control}
+            name="images"
+            render={({field}) => (
+              <FormItem>
+                <FormLabel>Product Images</FormLabel>
+                <FormControl>
+                  <ImagesUpload
+                    value={field.value.map(image => image.url)}
+                    onChange={(urls) => {
+                      field.onChange(urls.map(url => ({url})))
+                    }}
+                    onRemove={(url) => {
+                      field.onChange(
+                        field.value.filter(current => current.url !== url)
+                      )
+                    }}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          /> 
+          
           <div className="grid grid-cols-3 gap-8">
-            <FormField 
-              control={form.control}
-              name="images"
-              render={({field}) => (
-                <FormItem>
-                  <FormLabel>Billboard Image</FormLabel>
-                  <FormControl>
-                    <ImagesUpload
-                      value={field.value.map(image => image.url)}
-                      onChange={urls => {
-                        field.onChange(urls.map(url => {url}))
-                      }}
-                      onRemove={url => {
-                        field.onChange(
-                          field.value.filter(current => current.url !== url)
-                        )
-                      }}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            /> 
-
             <FormField 
               control={form.control}
               name="name" 
