@@ -91,7 +91,7 @@ const ImageUpload = ({disable, onChange,onRemove,value} : ImageUploadProps ) => 
                 
                    </>: (
                         <>
-                        <label>
+                        <label className="h-full">
                             <div className="w-full h-full flex flex-col gap-2 items-center 
                             justify-center cursor-pointer">
                                 <ImagePlus className="h-4 w-4" />

@@ -75,7 +75,7 @@ export const PATCH = async (req: Request,
             return NextResponse.json(billboard)
 
         } catch (err) {
-            console.log(`STORE_POST: ${err}`)
+            console.log(`BILLBOARD_PATCH: ${err}`)
             return new NextResponse("Internal Server Error", {status : 500})
         }
     }
@@ -111,16 +111,10 @@ export const DELETE = async (req: Request,
 
             await deleteDoc(billboardRef)
 
-            const billboard = (
-                await getDoc(
-                    doc(db, 'stores', params.storeId, 'billboards', params.billboardId)
-                )
-            ).data() as Billboards
-
-            return NextResponse.json(billboard)
+            return NextResponse.json({msg: 'Billboard deleted successfully'})
 
         } catch (err) {
-            console.log(`STORE_POST: ${err}`)
+            console.log(`BILLBOARD_DELETE: ${err}`)
             return new NextResponse("Internal Server Error", {status : 500})
         }
     }

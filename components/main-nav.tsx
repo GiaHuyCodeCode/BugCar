@@ -26,6 +26,42 @@ export const MainNav =({
 
         },
         {
+            href:`/${params.storeId}/categories`,
+            label: "Categories",
+            active: pathname ===`/${params.storeId}/categories`,
+
+        },
+        {
+            href:`/${params.storeId}/sizes`,
+            label: "Sizes",
+            active: pathname ===`/${params.storeId}/sizes`,
+
+        },
+        {
+            href:`/${params.storeId}/kitchens`,
+            label: "Kitchens",
+            active: pathname ===`/${params.storeId}/kitchens`,
+
+        },
+        {
+            href:`/${params.storeId}/brands`,
+            label: "Brands",
+            active: pathname ===`/${params.storeId}/brands`,
+
+        },
+        {
+            href:`/${params.storeId}/products`,
+            label: "Products",
+            active: pathname ===`/${params.storeId}/products`,
+
+        },
+        {
+            href:`/${params.storeId}/orders`,
+            label: "Orders",
+            active: pathname ===`/${params.storeId}/orders`,
+
+        },
+        {
             href:`/${params.storeId}/settings`,
             label: "Settings",
             active: pathname ===`/${params.storeId}/settings`,
