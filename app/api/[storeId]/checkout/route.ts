@@ -2,7 +2,7 @@ import Stripe from "stripe";
 import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { db } from "@/lib/firebase";
-import {Product} from "@/types-db";
+import {Product} from "@/type-db";
 import {addDoc,collection,doc,serverTimestamp,updateDoc} from "firebase/firestore"
 import { url } from "inspector";
 
@@ -25,7 +25,7 @@ export const POST=async(
 
     products.array.forEach((item:Product) => {
         line_items.push({
-            quantity:item.qty,
+            quantity:item.quantity,
             price_data: {
                 currency:"VND",
                 product_data:{
