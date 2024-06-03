@@ -12,13 +12,13 @@ import { Heading } from "@/components/Heading"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Kitchen } from "@/type-db"
+import { Brand } from "@/type-db"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Separator } from "@/components/ui/separator"
 import { AlertModal } from "@/components/modal/alert-modal";
 
 interface BrandFormProps{
-  initialData : Kitchen,
+  initialData : Brand,
 }
 
 const formSchema= z.object({

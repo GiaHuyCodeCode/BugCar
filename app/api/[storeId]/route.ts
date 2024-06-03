@@ -92,13 +92,13 @@ export const DELETE= async(req: Request,
             await deleteDoc(sizeDoc.ref)
         })
 
-        // delete kitchens
-        const kitchensQuerySnapshot = await getDocs(
-            collection(db, `stores/${params.storeId}/kitchens`)
+        // delete manufacturers
+        const manufacturersQuerySnapshot = await getDocs(
+            collection(db, `stores/${params.storeId}/manufacturers`)
         )
 
-        kitchensQuerySnapshot.forEach(async (kitchenDoc) => {
-            await deleteDoc(kitchenDoc.ref)
+        manufacturersQuerySnapshot.forEach(async (manufacturerDoc) => {
+            await deleteDoc(manufacturerDoc.ref)
         })
 
         // delete brands

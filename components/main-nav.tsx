@@ -38,9 +38,9 @@ export const MainNav =({
 
         },
         {
-            href:`/${params.storeId}/kitchens`,
-            label: "Kitchens",
-            active: pathname ===`/${params.storeId}/kitchens`,
+            href:`/${params.storeId}/manufacturers`,
+            label: "Manufacturers",
+            active: pathname ===`/${params.storeId}/manufacturers`,
 
         },
         {

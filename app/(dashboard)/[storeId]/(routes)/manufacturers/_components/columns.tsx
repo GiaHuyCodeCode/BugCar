@@ -6,14 +6,14 @@ import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CellAction } from "./cell-action"
 
-export type KitchenColumns = {
+export type ManufacturerColumns = {
     id: string,
     name: string,
     value: string,
     createAt: string,
 }
 
-export const columns: ColumnDef<KitchenColumns>[] = [
+export const columns: ColumnDef<ManufacturerColumns>[] = [
     {
         accessorKey: "name",
         header: ({ column }) => {

@@ -6,7 +6,7 @@ import { Brand } from "@/type-db";
 import { BrandColumns } from "./_components/columns";
 import BrandClient from "./_components/client";
 
-const KitchenPage = async ({params}: {params: {storeId : string}}) => {
+const BrandPage = async ({params}: {params: {storeId : string}}) => {
     const brandsData = (
         await getDocs(
             collection(doc(db, 'stores', params.storeId), 'brands')
@@ -29,4 +29,4 @@ const KitchenPage = async ({params}: {params: {storeId : string}}) => {
     );
 };
 
-export default KitchenPage
+export default BrandPage

@@ -1,7 +1,7 @@
 import { db } from "@/lib/firebase";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
-import { Category, Product, Size, Kitchen, Brand } from "@/type-db";
+import { Category, Product, Size, Manufacturer, Brand } from "@/type-db";
 import { ProductForm } from "./_components/product-form";
 
 const ProductPage = async ({params}: {params : {productId : string, storeId : string}}) => {
@@ -18,9 +18,9 @@ const ProductPage = async ({params}: {params : {productId : string, storeId : st
         await getDocs(collection(doc(db, 'stores', params.storeId), 'sizes'))
     ).docs.map(doc => doc.data()) as Size[]
 
-    const kitchensData = (
-        await getDocs(collection(doc(db, 'stores', params.storeId), 'kitchens'))
-    ).docs.map(doc => doc.data()) as Kitchen[]
+    const manufacturersData = (
+        await getDocs(collection(doc(db, 'stores', params.storeId), 'manufacturers'))
+    ).docs.map(doc => doc.data()) as Manufacturer[]
 
     const brandsData = (
         await getDocs(collection(doc(db, 'stores', params.storeId), 'brands'))
@@ -32,7 +32,7 @@ const ProductPage = async ({params}: {params : {productId : string, storeId : st
                 initialData={product}
                 categories={categoriesData}
                 sizes={sizesData}
-                kitchens={kitchensData}
+                manufacturers={manufacturersData}
                 brands={brandsData}
             />
         </div>

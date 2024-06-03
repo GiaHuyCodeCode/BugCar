@@ -10,7 +10,7 @@ import {
     updateDoc
 } from "firebase/firestore"
 import { NextResponse } from "next/server"
-import { Kitchen } from "@/type-db"
+import { Manufacturer } from "@/type-db"
 
 export const POST = async (req: Request, 
     {params} : {params : {storeId: string}}) => {
@@ -25,11 +25,11 @@ export const POST = async (req: Request,
             const { name, value } = body
 
             if(!name) {
-                return new NextResponse('Kitchen name is missing!', { status: 400 })
+                return new NextResponse('Manufacturer name is missing!', { status: 400 })
             }
 
             if(!value) {
-                return new NextResponse('Kitchen value is missing!', { status: 400 })
+                return new NextResponse('Manufacturer value is missing!', { status: 400 })
             }
 
             if(!params.storeId) {
@@ -46,29 +46,29 @@ export const POST = async (req: Request,
                 } 
             }
 
-            const kitchenData = {
+            const manufacturerData = {
                 name,
                 value,
                 createAt: serverTimestamp()
             }
 
-            const kitchenRef = await addDoc(
-                collection(db, 'stores', params.storeId, 'kitchens'), 
-                kitchenData
+            const manufacturerRef = await addDoc(
+                collection(db, 'stores', params.storeId, 'manufacturers'), 
+                manufacturerData
             )
 
-            const id = kitchenRef.id
+            const id = manufacturerRef.id
 
-            await updateDoc(doc(db, 'stores', params.storeId, 'kitchens', id), {
-                ...kitchenData,
+            await updateDoc(doc(db, 'stores', params.storeId, 'manufacturers', id), {
+                ...manufacturerData,
                 id,
                 updateAt: serverTimestamp()
             })
 
-            return NextResponse.json({id, ...kitchenData})
+            return NextResponse.json({id, ...manufacturerData})
 
         } catch (err) {
-            console.log(`KITCHENS_POST: ${err}`)
+            console.log(`MANUFACTURERS_POST: ${err}`)
             return new NextResponse("Internal Server Error", {status : 500})
         }
     }
@@ -80,16 +80,16 @@ export const GET = async (req: Request,
                 return new NextResponse('Store id is missing!', { status: 400 })
             }
 
-            const kitchensData = (
+            const manufacturersData = (
                 await getDocs(
-                    collection(doc(db, 'stores', params.storeId), 'kitchens')
+                    collection(doc(db, 'stores', params.storeId), 'manufacturers')
                 )
-            ).docs.map(doc => doc.data()) as Kitchen[]
+            ).docs.map(doc => doc.data()) as Manufacturer[]
 
-            return NextResponse.json(kitchensData)
+            return NextResponse.json(manufacturersData)
 
         } catch (err) {
-            console.log(`KITCHENS_GET: ${err}`)
+            console.log(`MANUFACTURERS_GET: ${err}`)
             return new NextResponse("Internal Server Error", {status : 500})
         }
     }

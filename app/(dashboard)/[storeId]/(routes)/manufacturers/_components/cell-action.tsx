@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation"
 import { Copy, Edit, MoreVertical, Trash } from "lucide-react"
 import axios from "axios"
 
-import { KitchenColumns } from "./columns"
+import { ManufacturerColumns } from "./columns"
 import { 
     DropdownMenu, 
     DropdownMenuContent, 
@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button"
 import { AlertModal } from "@/components/modal/alert-modal"
 
 interface CellActionProps {
-    data: KitchenColumns
+    data: ManufacturerColumns
 }
 
 export const CellAction = ({data}: CellActionProps) => {
@@ -30,17 +30,17 @@ export const CellAction = ({data}: CellActionProps) => {
 
     const onCopy = (id: string) => {
         navigator.clipboard.writeText(id)
-        toast.success('Kitchen id is copied')
+        toast.success('Manufacturer id is copied')
     }
 
     const onDelete = async () => {
         try {
             setIsLoading(true);
     
-            await axios.delete(`/api/${params.storeId}/kitchens/${data.id}`);
+            await axios.delete(`/api/${params.storeId}/manufacturers/${data.id}`);
         
-            toast.success("Kitchen Removed"); 
-            router.push(`/${params.storeId}/kitchens`)
+            toast.success("Manufacturer Removed"); 
+            router.push(`/${params.storeId}/manufacturers`)
             location.reload()
             
         } catch (error) {
@@ -80,7 +80,7 @@ export const CellAction = ({data}: CellActionProps) => {
                         Copy Id
                     </DropdownMenuItem>
 
-                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/kitchens/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/${params.storeId}/manufacturers/${data.id}`)}>
                         <Edit className="h-4 w-4 mr-2"/>
                         Update
                     </DropdownMenuItem>

@@ -34,7 +34,7 @@ export const POST = async (req: Request,
                 isArchived,
                 category,
                 size,
-                kitchen,
+                manufacturer,
                 brand,
              } = body
 
@@ -76,7 +76,7 @@ export const POST = async (req: Request,
                 isArchived,
                 category,
                 size,
-                kitchen,
+                manufacturer,
                 brand,
                 createAt: serverTimestamp()
             }
@@ -121,8 +121,8 @@ export const GET = async (req: Request,
             if(searchParams.has('category')) {
                 queryContraints.push(where('category', '==', searchParams.get('category')))
             }
-            if(searchParams.has('kitchen')) {
-                queryContraints.push(where('kitchen', '==', searchParams.get('kitchen')))
+            if(searchParams.has('manufacturer')) {
+                queryContraints.push(where('manufacturer', '==', searchParams.get('manufacturer')))
             }
             if(searchParams.has('brand')) {
                 queryContraints.push(where('brand', '==', searchParams.get('brand')))
