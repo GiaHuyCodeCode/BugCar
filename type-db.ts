@@ -34,7 +34,7 @@ export interface Size {
     updateAt?: Timestamp;
 }
 
-export interface Kitchen {
+export interface Manufacturer {
     id: string,
     name: string,
     value: string,
@@ -60,7 +60,7 @@ export interface Product {
     isArchived: boolean,
     category: string,
     size: string,
-    kitchen: string,
+    manufacturer: string,
     brand: string,
     createAt?: Timestamp;
     updateAt?: Timestamp;

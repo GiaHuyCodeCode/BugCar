@@ -12,13 +12,13 @@ import { Heading } from "@/components/Heading"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Kitchen } from "@/type-db"
+import { Manufacturer } from "@/type-db"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Separator } from "@/components/ui/separator"
 import { AlertModal } from "@/components/modal/alert-modal";
 
-interface KitchenFormProps{
-  initialData : Kitchen,
+interface ManufacturerFormProps{
+  initialData : Manufacturer,
 }
 
 const formSchema= z.object({
@@ -26,7 +26,7 @@ const formSchema= z.object({
   value: z.string().min(1),
 });
 
-export const KitchenForm = ({ initialData }: KitchenFormProps) => {
+export const ManufacturerForm = ({ initialData }: ManufacturerFormProps) => {
   const form= useForm<z.infer<typeof formSchema>>({
     resolver :zodResolver(formSchema),
     defaultValues : initialData
@@ -37,10 +37,10 @@ export const KitchenForm = ({ initialData }: KitchenFormProps) => {
   const params = useParams();
   const router = useRouter();
 
-  const title = initialData ? "Edit Kitchen" : "Create Kitchen"; 
-  const description= initialData ? "Edit a kitchen" : "Add a new kitchen";
-  const toastMessage = initialData ? "Kitchen Updated" : "Kitchen Created"; 
-  const action = initialData ? "Save Changes" : "Create Kitchen"; 
+  const title = initialData ? "Edit Manufacturer" : "Create Manufacturer"; 
+  const description= initialData ? "Edit a manufacturer" : "Add a new manufacturer";
+  const toastMessage = initialData ? "Manufacturer Updated" : "Manufacturer Created"; 
+  const action = initialData ? "Save Changes" : "Create Manufacturer"; 
 
   const onSubmit = async (data : z.infer<typeof formSchema>) => {
     try {
@@ -48,14 +48,14 @@ export const KitchenForm = ({ initialData }: KitchenFormProps) => {
 
       if(initialData) {
         await axios.patch(
-          `/api/${params.storeId}/kitchens/${params.kitchenId}`, data
+          `/api/${params.storeId}/manufacturers/${params.manufacturerId}`, data
         )
       } else {
-        await axios.post(`/api/${params.storeId}/kitchens`, data);
+        await axios.post(`/api/${params.storeId}/manufacturers`, data);
       }
 
       toast.success(toastMessage);
-      router.push(`/${params.storeId}/kitchens`)
+      router.push(`/${params.storeId}/manufacturers`)
     } catch (error) {
       toast.error("Something were wrong");
       
@@ -69,10 +69,10 @@ export const KitchenForm = ({ initialData }: KitchenFormProps) => {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/${params.storeId}/kitchens/${params.kitchenId}`);
+      await axios.delete(`/api/${params.storeId}/manufacturers/${params.manufacturerId}`);
 
-      toast.success("Kitchen Removed");
-      router.push(`/${params.storeId}/kitchens`)
+      toast.success("Manufacturer Removed");
+      router.push(`/${params.storeId}/manufacturers`)
       router.refresh();
     
     } catch (error) {
@@ -121,7 +121,7 @@ export const KitchenForm = ({ initialData }: KitchenFormProps) => {
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder="Your kitchen name..."
+                      placeholder="Your manufacturer name..."
                       {... field}
                     />
                   </FormControl>
@@ -138,7 +138,7 @@ export const KitchenForm = ({ initialData }: KitchenFormProps) => {
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder="Your kitchen value..."
+                      placeholder="Your manufacturer value..."
                       {... field}
                     />
                   </FormControl>

@@ -12,7 +12,7 @@ import { Heading } from "@/components/Heading"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Category, Kitchen, Product, Size, Brand } from "@/type-db"
+import { Category, Manufacturer, Product, Size, Brand } from "@/type-db"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Separator } from "@/components/ui/separator"
 import { AlertModal } from "@/components/modal/alert-modal";
@@ -24,7 +24,7 @@ interface ProductFormProps{
   initialData : Product,
   categories: Category[],
   sizes: Size[],
-  kitchens: Kitchen[],
+  manufacturers: Manufacturer[],
   brands: Brand[],
 }
 
@@ -36,11 +36,11 @@ const formSchema= z.object({
   isArchived: z.boolean().default(false).optional(),
   category: z.string().min(1),
   size: z.string().optional(),
-  kitchen: z.string().optional(),
+  manufacturer: z.string().optional(),
   brand: z.string().optional(),
 });
 
-export const ProductForm = ({ initialData, categories, sizes, kitchens, brands }: ProductFormProps) => {
+export const ProductForm = ({ initialData, categories, sizes, manufacturers, brands }: ProductFormProps) => {
   const form= useForm<z.infer<typeof formSchema>>({
     resolver :zodResolver(formSchema),
     defaultValues: initialData || {
@@ -51,7 +51,7 @@ export const ProductForm = ({ initialData, categories, sizes, kitchens, brands }
       isArchived: false,
       category: '',
       size: '',
-      kitchen: '',
+      manufacturer: '',
       brand: '',
     },
   });
@@ -265,10 +265,10 @@ export const ProductForm = ({ initialData, categories, sizes, kitchens, brands }
 
             <FormField 
               control={form.control}
-              name="kitchen" 
+              name="manufacturer" 
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Kitchen</FormLabel>
+                  <FormLabel>Manufacturer</FormLabel>
 
                   <Select
                     disabled={isLoading}
@@ -280,15 +280,15 @@ export const ProductForm = ({ initialData, categories, sizes, kitchens, brands }
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
-                          placeholder='Select kitchen'
+                          placeholder='Select manufacturer'
                         />
                       </SelectTrigger>
                     </FormControl>
 
                     <SelectContent>
-                      {kitchens.map((kitchen) => (
-                        <SelectItem key={kitchen.id} value={kitchen.name}>
-                          {kitchen.name}
+                      {manufacturers.map((manufacturer) => (
+                        <SelectItem key={manufacturer.id} value={manufacturer.name}>
+                          {manufacturer.name}
                         </SelectItem>
                       ))}
                     </SelectContent>

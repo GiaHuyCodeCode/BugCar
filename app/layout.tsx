@@ -8,7 +8,7 @@ import { ToastProvider } from "@/providers/toast-provider";
 const poppins = Poppins({ subsets: ["latin"],weight :["100","200","300","400","500","600","700","800","900"] });
 
 export const metadata: Metadata = {
-  title: "Multi-Store Admin Portal",
+  title: "Car-Multi-Store Admin Portal",
   description: "Manage yout store on a single place",
 };
 
@@ -19,15 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      
-        <html lang="en">
-      <body className={poppins.className}>
-        <ModalProvider></ModalProvider>
-        <ToastProvider />
-        {children}
+      <html lang="en">
+        <body className={poppins.className}>
+          <ModalProvider></ModalProvider>
+          <ToastProvider />
+          {children}
         </body>
-    </html>
-  
+      </html>
     </ClerkProvider>
   );
 }

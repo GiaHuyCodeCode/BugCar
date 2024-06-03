@@ -14,7 +14,7 @@ export type ProductColumns = {
     isArchived: boolean,
     category: string,
     size: string,
-    kitchen: string,
+    manufacturer: string,
     brand: string,
     images: { url: string[] },
     createAt: string;
@@ -56,8 +56,8 @@ export const columns: ColumnDef<ProductColumns>[] = [
         header: "Size"
     },
     {
-        accessorKey: "kitchen",
-        header: "Kitchen"
+        accessorKey: "manufacturer",
+        header: "Manufacturer"
     },
     {
         accessorKey: "brand",

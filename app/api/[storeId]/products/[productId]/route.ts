@@ -29,7 +29,7 @@ export const PATCH = async (req: Request,
                 isArchived,
                 category,
                 size,
-                kitchen,
+                manufacturer,
                 brand,
              } = body
 
@@ -79,7 +79,7 @@ export const PATCH = async (req: Request,
                         isArchived,
                         category,
                         size,
-                        kitchen,
+                        manufacturer,
                         brand,
                         updateAt: serverTimestamp(),
                     }
