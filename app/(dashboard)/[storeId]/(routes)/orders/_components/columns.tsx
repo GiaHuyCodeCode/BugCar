@@ -40,7 +40,7 @@ export const columns: ColumnDef<OrderColumns>[] = [
     },
     {
         accessorKey: "totalPrice",
-        header: "Amount"
+        header: "Amount"    
     },
     {
         accessorKey: "order_status",
@@ -65,8 +65,8 @@ export const columns: ColumnDef<OrderColumns>[] = [
 
             return (
                 <p className={cn("text-base font-semibold", isPaid ? "text-emerald-500" : "text-red-500")}>{isPaid ? "Paid" : "Not Paid"}</p>
-            )
-        }
+            );
+        },
     },  
     {
         accessorKey: "products",
