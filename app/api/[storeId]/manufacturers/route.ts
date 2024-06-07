@@ -10,7 +10,7 @@ import {
     updateDoc
 } from "firebase/firestore"
 import { NextResponse } from "next/server"
-import { Manufacturer } from "@/type-db"
+import { Manufacturer } from "@/type-db"    
 
 export const POST = async (req: Request, 
     {params} : {params : {storeId: string}}) => {

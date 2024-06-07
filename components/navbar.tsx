@@ -7,7 +7,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Store } from "@/type-db";
 
-export const Navbar =async ()=> {
+export const Navbar = async () => {
 
     const{userId}=auth()
 
