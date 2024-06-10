@@ -3,8 +3,7 @@ import { NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { db } from "@/lib/firebase";
 import {Product} from "@/type-db";
-import {addDoc,collection,doc,serverTimestamp,updateDoc} from "firebase/firestore"
-import { url } from "inspector";
+import {addDoc,collection,doc,serverTimestamp,updateDoc} from "firebase/firestore";
 
 const corsHeaders = {
     "Access-Control-Allow-Origin" : "*",
@@ -14,13 +13,14 @@ const corsHeaders = {
 
 export const OPTIONS = async () => {
     return NextResponse.json({}, {headers:corsHeaders});
-}
+};
 
 export const POST = async (
     req:Request,
     {params}:{params:{storeId:string}}
 )=>{    
     const {products, userId}=await req.json();
+
     const line_items : Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
     products.forEach((item:Product) => {
@@ -42,7 +42,7 @@ export const POST = async (
     userId,
     order_status:"Processing",
     createAt: serverTimestamp(),
-  }  
+  }; 
 
   const orderRef = await addDoc(
     collection(db,"stores",params.storeId,"orders"), orderData
