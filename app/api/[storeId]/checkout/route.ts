@@ -16,18 +16,18 @@ export const OPTIONS = async () => {
     return NextResponse.json({}, {headers:corsHeaders});
 }
 
-export const POST=async(
+export const POST = async (
     req:Request,
     {params}:{params:{storeId:string}}
 )=>{    
     const {products, userId}=await req.json();
     const line_items : Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
-    products.array.forEach((item:Product) => {
+    products.forEach((item:Product) => {
         line_items.push({
             quantity:item.quantity,
             price_data: {
-                currency:"VND",
+                currency:"USD",
                 product_data:{
                     name:item.name,
                 },
@@ -35,6 +35,7 @@ export const POST=async(
             },
         });
     });
+
   const orderData={
     isPaid:false,
     orderItems:products,
@@ -52,7 +53,7 @@ export const POST=async(
   await updateDoc(doc(db,"stores",params.storeId,"orders",id),{
     ...orderData,
     id,
-    updatedAt:serverTimestamp(),
+    updateAt:serverTimestamp(),
   });
 
   const session = await stripe.checkout.sessions.create({
