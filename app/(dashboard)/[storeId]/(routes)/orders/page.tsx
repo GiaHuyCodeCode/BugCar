@@ -17,9 +17,9 @@ const OrdersPage = async ({params}: {params: {storeId : string}}) => {
     const formattedOrders: OrderColumns[] = ordersData.map(item => ({
         id: item.id,
         isPaid: item.isPaid,
-        phone: item.phone,
+        phone: item.phone,  
         address: item.address,
-        products: item.orderItems.map(item => item.name).join(', '),
+        products: item.orderItems.map(item => item.name).join(", "),
         order_status: item.order_status,
         totalPrice:formatter.format(
             item.orderItems.reduce((total, item) => {
@@ -27,12 +27,11 @@ const OrdersPage = async ({params}: {params: {storeId : string}}) => {
                 return total + Number(item.price * item.quantity)
             }
             return total
-
         }, 0)
     ),
-        images: item.orderItems.map(item => item.images.url[0]), 
-        createAt: item.createAt ? format(item.createAt.toDate(), 'MMMM do, yyyy'): ''
-    }))
+        images: item.orderItems.map(item => item.images[0].url), 
+        createAt: item.createAt ? format(item.createAt.toDate(), "MMMM do, yyyy"): "",
+    }));
 
     return (
         <div className="flex-col">

@@ -23,7 +23,7 @@ export const POST = async(req:Request)=>{
             body,
             signature,
             process.env.STRIPE_WEBHOOK_SECRET!
-        )
+        );
     }catch(error:any){
         return new NextResponse(`WEBHOOK Error:${(error as Error)?.message}`)
     }
@@ -53,7 +53,7 @@ export const POST = async(req:Request)=>{
                     isPaid:true,
                     address: addressString,
                     phone:session?.customer_details?.phone,
-                    updatedAt:serverTimestamp(),
+                    updateAt:serverTimestamp(),
                 }
             );
         }
