@@ -56,7 +56,7 @@ export const PATCH = async (
         {
           ...orderRef.data(),
           order_status,
-          updatedAt: serverTimestamp(),
+          updateAt: serverTimestamp(),
         }
       );
     } else {

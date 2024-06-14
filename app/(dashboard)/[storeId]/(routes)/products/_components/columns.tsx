@@ -37,7 +37,7 @@ export const columns: ColumnDef<ProductColumns>[] = [
     },
     {
         accessorKey: "price",
-        header: "Price"
+        header: "Price $"
     },
     {
         accessorKey: "isFeatured",

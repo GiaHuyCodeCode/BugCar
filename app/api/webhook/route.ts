@@ -53,7 +53,7 @@ export const POST = async(req:Request)=>{
                     isPaid:true,
                     address: addressString,
                     phone:session?.customer_details?.phone,
-                    updatedAt:serverTimestamp(),
+                    updateAt:serverTimestamp(),
                 }
             );
         }
