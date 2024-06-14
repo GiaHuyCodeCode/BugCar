@@ -11,20 +11,28 @@ import {
   updateDoc,
 } from "firebase/firestore";
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Authorization",
-};
+// const corsHeaders = {
+//   "Access-Control-Allow-Origin": "*",
+//   "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
+//   "Access-Control-Allow-Headers": "Content-Type, Authorization",
+// };
 
-export const OPTIONS = async () => {
-  return NextResponse.json({}, { headers: corsHeaders });
-};
+// export const OPTIONS = async () => {
+//   return NextResponse.json({}, { headers: corsHeaders });
+// };
 
 export const POST = async (
   req: Request,
   { params }: { params: { storeId: string } }
 ) => {
+  // return NextResponse.json(
+  //   { msg: "pass" },
+  //   {
+  //     headers: {
+  //       "access-control-allow-origin": "*",
+  //     },
+  //   }
+  // );
   const { products, userId } = await req.json();
 
   const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
@@ -81,5 +89,5 @@ export const POST = async (
     },
   });
 
-  return NextResponse.json({ url: session.url }, { headers: corsHeaders });
+  return NextResponse.json({ url: session.url });
 };
