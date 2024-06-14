@@ -5,9 +5,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Check, ChevronsUpDown, StoreIcon } from "lucide-react";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "./ui/command";
-import { cn } from "@/lib/utils";
+import { ChevronsUpDown, StoreIcon } from "lucide-react";
+import { Command, CommandEmpty, CommandGroup, CommandList, CommandSeparator } from "./ui/command";
 import { StoreListItem } from "./store-list-item";
 import { useStoreModal } from "@/hooks/use-store-modal";
 import CreareNewStoreItem from "./create-store-item";

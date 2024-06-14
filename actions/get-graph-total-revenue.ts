@@ -28,7 +28,7 @@ export const getGraphTotalRevenue = async (storeId:string) => {
                 }else{
                     revenueForOrder+=item.price;
                 }
-            }
+            }   
             monthlyRevenue[month]=(monthlyRevenue[month]||0)+revenueForOrder;
         }  
     }
