@@ -182,7 +182,7 @@ export const ProductForm = ({ initialData, categories, sizes, manufacturers, bra
               name="price" 
               render={({field}) => (
                 <FormItem>
-                  <FormLabel>Value</FormLabel>
+                  <FormLabel>Value $</FormLabel>
                   <FormControl>
                     <Input
                       type='number'
