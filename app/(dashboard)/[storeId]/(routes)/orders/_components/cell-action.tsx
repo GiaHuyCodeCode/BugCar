@@ -25,6 +25,7 @@ interface CellActionProps {
 export const CellAction = ({data}: CellActionProps) => {
     const router = useRouter()
     const params = useParams()
+
     const [isLoading, setIsLoading] = useState(false)
     const [open, setOpen] = useState(false)
 
@@ -98,12 +99,17 @@ export const CellAction = ({data}: CellActionProps) => {
 
                     <DropdownMenuItem onClick={() => onUpdate({id:data.id, order_status:"Delivering"})}>
                         <Edit className="h-4 w-4 mr-2"/>
-                        Update
+                        Delivering
                     </DropdownMenuItem>
 
                     <DropdownMenuItem onClick={() => onUpdate({id:data.id, order_status:"Delivered"})}>
                         <Edit className="h-4 w-4 mr-2"/>
                         Delivered
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem onClick={() => onUpdate({id:data.id, order_status:"Canceled"})}>
+                        <Edit className="h-4 w-4 mr-2"/>
+                        Canceled
                     </DropdownMenuItem>
                     
                     <DropdownMenuItem onClick={() => setOpen(true)}>

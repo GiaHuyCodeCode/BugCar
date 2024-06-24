@@ -2,12 +2,12 @@ import { db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 import { Size } from "@/type-db";
-import { SizeForm } from "./_components/size-form";
+import { SizeForm } from "./_components/order-form";
 
 const SizePage = async ({params}: {params : {sizeId : string, storeId : string}}) => {
     
     const size = (
-        await getDoc(doc(db, "stores", params.storeId, "sizes", params.sizeId))
+        await getDoc(doc(db, "stores", params.storeId, "orders", params.sizeId))
     ).data() as Size; 
 
     return (

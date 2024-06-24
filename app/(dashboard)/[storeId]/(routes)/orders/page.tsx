@@ -26,7 +26,7 @@ const OrdersPage = async ({params}: {params: {storeId : string}}) => {
             if(item && item.quantity !== undefined) {
                 return total + Number(item.price * item.quantity)
             }
-            return total
+            return total;
         }, 0)
     ),
         images: item.orderItems.map(item => item.images[0].url), 

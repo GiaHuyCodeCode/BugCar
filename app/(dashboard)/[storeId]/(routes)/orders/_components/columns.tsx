@@ -64,7 +64,12 @@ export const columns: ColumnDef<OrderColumns>[] = [
             const {isPaid} = row.original
 
             return (
-                <p className={cn("text-base font-semibold", isPaid ? "text-emerald-500" : "text-red-500")}>{isPaid ? "Paid" : "Not Paid"}</p>
+                <p className={cn("text-base font-semibold", isPaid ? "text-emerald-500" : "text-red-500"
+
+                )}
+                >
+                    {isPaid ? "Paid" : "Not Paid"}
+                    </p>
             );
         },
     },  

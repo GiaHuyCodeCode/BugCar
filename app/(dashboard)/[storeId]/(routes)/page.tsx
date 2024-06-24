@@ -57,7 +57,7 @@ const DashboardOverview = async({params}:DashboardOverviewProps) => {
             <DollarSign className="w-4 h-4 text-muted-foreground"/>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+{totalSales}</div>
+            <div className="text-2xl font-bold">+8</div>
           </CardContent>
         </Card>
 
@@ -67,7 +67,7 @@ const DashboardOverview = async({params}:DashboardOverviewProps) => {
             <DollarSign className="w-4 h-4 text-muted-foreground"/>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+{totalProducts}</div>
+            <div className="text-2xl font-bold">+12</div>
           </CardContent>
         </Card>
 
@@ -89,7 +89,7 @@ const DashboardOverview = async({params}:DashboardOverviewProps) => {
             <DollarSign className="w-4 h-4 text-muted-foreground"/>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+{totalProducts}</div>
+            {/* <div className="text-2xl font-bold">+8</div> */}
           </CardContent>
 
           <Overview data={orderStatusTotalRevenue}/>
@@ -101,7 +101,7 @@ const DashboardOverview = async({params}:DashboardOverviewProps) => {
             <DollarSign className="w-4 h-4 text-muted-foreground"/>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+{totalProducts}</div>
+            {/* <div className="text-2xl font-bold">+{totalProducts}</div> */}
           </CardContent>
 
           <Overview data={revenueByCategory}/>
@@ -113,7 +113,7 @@ const DashboardOverview = async({params}:DashboardOverviewProps) => {
             <DollarSign className="w-4 h-4 text-muted-foreground"/>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+{totalProducts}</div>
+            {/* <div className="text-2xl font-bold">+{totalProducts}</div> */}
           </CardContent>
 
           <Overview data={revenueByOrderStatus}/>

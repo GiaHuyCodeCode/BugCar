@@ -12,14 +12,14 @@ import { Heading } from "@/components/Heading"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Size } from "@/type-db"
+import { Order } from "@/type-db"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Separator } from "@/components/ui/separator"
 import { AlertModal } from "@/components/modal/alert-modal";
 import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 
-interface SizeFormProps{
-  initialData : Size,
+interface OrderFormProps{
+  initialData : Order,
 }
 
 const formSchema= z.object({
